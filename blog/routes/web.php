@@ -21,3 +21,5 @@ Route::get('/home', [BlogController::class, 'index']);
 Route::get('/about', [BlogController::class, 'about']);
 Route::get('/article', [BlogController::class, 'article']);
 Route::get('/contact', [BlogController::class, 'contact']);
+Route::post('/contact', [BlogController::class, 'contactForm']);
+
