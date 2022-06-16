@@ -14,8 +14,8 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        $posts = BlogPost::all();  // SELECT * FROM BlogPosts
-        return $posts;
+        $posts = BlogPost::all();  // SELECT * FROM Blog_Posts
+        return view('blog.index', ['posts' => $posts]);
     }
 
     /**
@@ -25,7 +25,7 @@ class BlogPostController extends Controller
      */
     public function create()
     {
-        //
+        return view('blog.create');
     }
 
     /**
@@ -47,7 +47,9 @@ class BlogPostController extends Controller
      */
     public function show(BlogPost $blogPost)
     {
-        //
+        //$blogPost = SELECT * FROM blog_posts WHERE id = $blogPost
+
+        return view('blog.show', ['blogPost' => $blogPost]);
     }
 
     /**
