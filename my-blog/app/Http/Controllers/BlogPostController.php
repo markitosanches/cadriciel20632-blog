@@ -36,7 +36,13 @@ class BlogPostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $newBlog = BlogPost::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'user_id' => 1
+       ]);
+
+        return redirect(route('blog.show', $newBlog->id));
     }
 
     /**
@@ -60,7 +66,7 @@ class BlogPostController extends Controller
      */
     public function edit(BlogPost $blogPost)
     {
-        //
+        return view('blog.edit', ['blogPost' => $blogPost]);
     }
 
     /**
@@ -72,7 +78,12 @@ class BlogPostController extends Controller
      */
     public function update(Request $request, BlogPost $blogPost)
     {
-        //
+        $blogPost->update([
+            'title' => $request->title,
+            'body' => $request->body
+        ]);
+
+        return redirect(route('blog.show', $blogPost->id));
     }
 
     /**
@@ -83,6 +94,63 @@ class BlogPostController extends Controller
      */
     public function destroy(BlogPost $blogPost)
     {
-        //
+        $blogPost->delete();
+
+        return redirect(route('blog'));
+    }
+
+    public function query(){
+
+        //SELECT
+
+        //$blog = BlogPost::all();
+
+        //$blog = BlogPost::select('title')->get();
+
+        //WHERE
+        // $blog = BlogPost::select()
+        // ->WHERE('user_id','=', 1)
+        // ->get();
+
+        //CLE PRIMAIRE
+        // $blog = BlogPost::find(1);
+
+        //AND
+        // $blog = BlogPost::select()
+        // ->WHERE('user_id','=', 1)
+        // ->WHERE('id', 1)
+        // ->get();
+
+        //OR
+        // $blog = BlogPost::select()
+        // ->WHERE('user_id','=', 1)
+        // ->orWHERE('id', 1)
+        // ->get();
+
+        //ORDER BY
+        // $blog = BlogPost::select('id')
+        // ->ORDERBY('id', 'desc')
+        // ->get();
+
+        //INNER JOIN
+        // $blog = BlogPost::select()
+        // ->JOIN('users', 'blog_posts.user_id', '=', 'users.id')
+        // ->get();
+
+        //OUTER JOIN
+        // $blog = BlogPost::select()
+        // ->leftJOIN('users', 'blog_posts.user_id', '=', 'users.id')
+        // ->get();
+
+        //Aggregate
+        // $blog = BlogPost::count('*');
+        // $blog = BlogPost::max('id');
+        // $blog = BlogPost::min('id');
+        // $blog = BlogPost::avg('id');
+
+        $blog = BlogPost::where('user_id', 1)
+        ->count('id');
+
+        return $blog;
     }
 }
