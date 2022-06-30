@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\DB;
+use DB;
 
 class BlogPostController extends Controller
 {
@@ -148,9 +150,18 @@ class BlogPostController extends Controller
         // $blog = BlogPost::min('id');
         // $blog = BlogPost::avg('id');
 
-        $blog = BlogPost::where('user_id', 1)
-        ->count('id');
+        // $blog = BlogPost::where('user_id', 1)
+        // ->count('id');
 
-        return $blog;
+        // $blog = BlogPost::select(DB::raw('count(*) as blogs, user_id'))
+        // ->groupBy('user_id')
+        // ->get();
+
+
+        $blog = new BlogPost;
+        $blog = $blog->selectBlog(1);
+
+        return $blog[0];
+        
     }
 }

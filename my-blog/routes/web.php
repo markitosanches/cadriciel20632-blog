@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\CustomAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,7 @@ Route::delete('blog/{blogPost}', [BlogPostController::class, 'destroy'])->name('
 
 
 Route::get('query-test', [BlogPostController::class, 'query']);
+
+Route::get('login', [CustomAuthController::class, 'index'])->name('login');
+Route::get('registration', [CustomAuthController::class, 'create'])->name('registration');
+Route::post('custom-registration', [CustomAuthController::class, 'store'])->name('custom.registration');
