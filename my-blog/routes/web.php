@@ -31,5 +31,8 @@ Route::delete('blog/{blogPost}', [BlogPostController::class, 'destroy'])->name('
 Route::get('query-test', [BlogPostController::class, 'query']);
 
 Route::get('login', [CustomAuthController::class, 'index'])->name('login');
+Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('custom.login');
 Route::get('registration', [CustomAuthController::class, 'create'])->name('registration');
 Route::post('custom-registration', [CustomAuthController::class, 'store'])->name('custom.registration');
+Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->name('dashboard');
+Route::get('logout', [CustomAuthController::class, 'logout'])->name('logout');
