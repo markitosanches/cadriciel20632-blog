@@ -6,6 +6,7 @@ use App\Models\BlogPost;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\DB;
 use DB;
+use Auth;
 
 class BlogPostController extends Controller
 {
@@ -16,8 +17,11 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        $posts = BlogPost::all();  // SELECT * FROM Blog_Posts
-        return view('blog.index', ['posts' => $posts]);
+       // if(Auth::check()){
+            $posts = BlogPost::all();  // SELECT * FROM Blog_Posts
+            return view('blog.index', ['posts' => $posts]);
+        // }
+        // return redirect(route('login'))->withErrors(trans('auth.failed'));
     }
 
     /**
