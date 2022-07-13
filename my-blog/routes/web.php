@@ -30,6 +30,7 @@ Route::post('blog-create', [BlogPostController::class, 'store'])->name('blog.cre
 Route::get('blog-edit/{blogPost}', [BlogPostController::class, 'edit'])->name('blog.edit')->middleware('auth');
 Route::put('blog-edit/{blogPost}', [BlogPostController::class, 'update'])->name('blog.update')->middleware('auth');
 Route::delete('blog/{blogPost}', [BlogPostController::class, 'destroy'])->name('blog.delete')->middleware('auth');
+Route::get('blog-pdf/{blogPost}', [BlogPostController::class, 'showPDF'])->name('blog.showPdf')->middleware('auth');
 
 
 Route::get('query-test', [BlogPostController::class, 'query']);

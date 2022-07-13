@@ -8,6 +8,7 @@
                <h1  class="display-one">{{ ucfirst($blogPost->title) }}</h1>
                <p>{!! $blogPost->body !!}</p>
                <p>Auteur: {{ $blogPost->blogHasUser->name }}</p>
+               <a href="{{route('blog.showPdf', $blogPost->id)}}" class="btn btn-outline-warning">PDF</a>
                <hr>
                <a href="{{route('blog.edit', $blogPost->id)}}" class="btn btn-outline-primary">Modifier l'article</a>
                <hr>

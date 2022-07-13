@@ -25,3 +25,5 @@ class Categorie extends Model
         return $query;
     } 
 }
+
+
