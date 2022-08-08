@@ -41,3 +41,7 @@ Route::get('registration', [CustomAuthController::class, 'create'])->name('regis
 Route::post('custom-registration', [CustomAuthController::class, 'store'])->name('custom.registration');
 Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->name('dashboard');
 Route::get('logout', [CustomAuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('forgot-password', [CustomAuthController::class, 'forgotPassword'])->name('forgot.password');
+Route::post('forgot-password', [CustomAuthController::class, 'tempPassword'])->name('temp.password');
+Route::get('new-password/{user}/{tempPassword}', [CustomAuthController::class, 'newPassword'])->name('new.password');
+Route::post('new-password/{user}/{tempPassword}', [CustomAuthController::class, 'storeNewPassword']);

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Hash;
 use Auth;
 use Session;
+use Mail;
+use Illuminate\Support\str;
 //use  Illuminate\Support\Facades\Auth;
 
 class CustomAuthController extends Controller
@@ -85,51 +87,69 @@ class CustomAuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        $to_name=$request->name;
+        $to_email=$request->email;
+        $body = "<a href='http://localhost:8000'> Clique ici pour confirmer votre compte</a>";
+
+        Mail::send('email.mail', $data=['name'=>$to_name, 'body'=>$body],
+        function($message) use ($to_name, $to_email)
+        {
+            $message->to($to_email, $to_name)->subject('Test Laravel');
+        });
+
         return redirect(route('login'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
+    public function forgotPassword(){
+        return view('auth.forgot-password');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+    public function tempPassword(Request $request){
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+        if(User::where('email', $request->email)->exists()){
+               $user =  User::where('email', $request->email)->get();
+               $user = $user[0];
+               $userId = $user->id;
+               $tempPass = str::random(50);
+               $user->temp_password = $tempPass;
+               $user->save();
+
+               //return $tempPass;
+
+               $to_name= $user->name;
+               $to_email = $request->email;
+               $body="<a href='http://localhost:8000/new-password/".$userId."/".$tempPass."'>Cliquez ici pour reinitialiser votre mot de passe</a>";
+
+               Mail::send('email.mail', $data=['name'=>$to_name, 'body'=>$body],
+               function($message) use ($to_name, $to_email)
+               {
+                   $message->to($to_email, $to_name)->subject('Reinitialiser votre mot de passe');
+               });
+
+               return redirect()->back()->withSuccess("SVP verifiez votre courriel");
+        }
+        return redirect()->back()->withErrors('Username does not exist');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
+    public function newPassword(User $user, $tempPassword){
+        if($user->temp_password === $tempPassword){
+            return view('auth.new-password');
+        }
+        return redirect(route('forgot.password'))->withErrors('Credential does not match');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
+    public function storeNewPassword(User $user, $tempPassword, Request $request){
+        if($user->temp_password === $tempPassword){
+            $request->validate([
+                'password' => 'required|min:6|max:10'
+            ]);
+            $user->password = Hash::make($request->password);
+            $user->temp_password = NULL;
+            $user->save();
+            return redirect(route('login'));
+        }
+        return redirect(route('forgot.password'))->withErrors('Credential does not match');
     }
 }
