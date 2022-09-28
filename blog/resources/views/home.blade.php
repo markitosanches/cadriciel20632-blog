@@ -1,7 +1,7 @@
-@extends('master')
+@extends('layout.master')
 @section('title', 'Home')
 @section('content')
-<!-- Page Header-->
+        <!-- Page Header-->
         <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -76,4 +76,4 @@
                 </div>
             </div>
         </div>
- @endsection
+@endsection
